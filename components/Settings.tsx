@@ -180,6 +180,10 @@ const Settings = ({ setSetting }: { setSetting: (opr: boolean) => void }) => {
     try {
       setErr('')
 
+      if (!updatedUsername) {
+        return
+      }
+
       const users = await databases.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_URL!,
         process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_USER!,
@@ -213,7 +217,7 @@ const Settings = ({ setSetting }: { setSetting: (opr: boolean) => void }) => {
   }
 
   return (
-    <div className='h-full z-30 w-full bg-black  flex lg:flex-row flex-col items-center relative justify-center gap-11'>
+    <div className='h-full z-30 w-full bg-black text-white  flex lg:flex-row flex-col items-center relative justify-center gap-11'>
 
       {!loading ? <><div className='relative p-3 '>
         {uploading && <p className='font-bold my-4 w-max m-auto'>Uploading ...</p>}
@@ -232,9 +236,9 @@ const Settings = ({ setSetting }: { setSetting: (opr: boolean) => void }) => {
       </div>
         <div className='w-1/2  flex flex-col justify-center h-full items-center p-5'>
           {err && <p className='text-red-500 font-bold m-auto w-max'>{err}</p>}
-          <svg onClick={() => setSetting(false)} className='h-9 absolute right-4 top-4 cursor-pointer active:scale-95' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill='#ffffff' d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
-          <div className='flex flex-col gap-5 border rounded p-5'>
-            <div className='flex items-center gap-2'>
+          <svg onClick={() => setSetting(false)} className='h-6 absolute right-4 top-4 cursor-pointer active:scale-95' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill='#ffffff' d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
+          <div className='flex flex-col gap-5 justify-center border rounded p-5'>
+            <div className='flex items-center gap-2 '>
               <pre className='text-2xl font-bold'>Name     : </pre>
               {onUpdateName ? <>
                 <input onChange={(e) => setUpdatedName(e.target.value)} type='text' className='px-4 py-2 rounded-2xl outline-none' placeholder='New Name' />
