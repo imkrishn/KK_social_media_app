@@ -25,7 +25,7 @@ const Auth = () => {
         const session = await account.getSession('current');
 
         if (session) {
-          router.push("/index");
+          router.push("/");
         }
       } catch (err) {
         console.log("Error fetching user:", err);

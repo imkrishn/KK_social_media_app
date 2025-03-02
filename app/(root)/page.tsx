@@ -37,13 +37,13 @@ export default function Main() {
         const session = await account.getSession('current');
 
         if (!session) {
-          router.push("/");
+          router.push("/auth");
         } else {
           setVerified(true)
         }
       } catch (err) {
         console.log("Error fetching user:", err);
-        router.push("/");
+        router.push("/auth");
       }
     };
 
