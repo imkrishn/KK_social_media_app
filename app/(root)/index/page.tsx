@@ -12,16 +12,11 @@ import Spinner from "@/components/ui/Spinner";
 import { useLoggedInUser } from "@/hooks/useLoggedInUser";
 import { setLoggedInUser } from "@/redux/slices/loggedInUser";
 import { AppDispatch } from "@/redux/store";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAuthUser } from "@/lib/getAuthUser";
+import { account } from "../appwrite";
 
-const authorised = await getAuthUser()
-
-if (!authorised) {
-  redirect('/')
-}
 
 
 
@@ -33,7 +28,25 @@ export default function Main() {
   const [setting, setSetting] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const { fullName, dob, userName, imageUrl, $id, email } = useLoggedInUser();
+  const router = useRouter()
 
+  useEffect(() => {
+    const getAuthUser = async () => {
+      try {
+        const session = await account.get();
+        console.log();
+
+        if (!session) {
+          router.push("/");
+        }
+      } catch (err) {
+        console.log("Error fetching user:", err);
+        router.push("/");
+      }
+    };
+
+    getAuthUser();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

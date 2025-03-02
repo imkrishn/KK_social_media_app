@@ -4,24 +4,36 @@ import Login from '@/components/Login'
 import Signup from '@/components/Signup';
 import { TextGenerateEffect } from '@/components/ui/Text-generate-Effect';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '@/public/images/kk.png'
 import { motion, AnimatePresence } from "framer-motion";
-import { redirect } from 'next/navigation';
-import { getAuthUser } from '@/lib/getAuthUser';
+import { account } from './appwrite';
+import { useRouter } from 'next/navigation';
 
 
-const authorised = await getAuthUser()
 
-if (authorised) {
-  redirect('/index')
-}
 
 type Auth = 'Login' | 'Signup';
 
 const Auth = () => {
   const [authType, setAuthType] = useState<Auth>('Login');
+  const router = useRouter()
 
+  useEffect(() => {
+    const getAuthUser = async () => {
+      try {
+        const session = await account.get();
+        if (session) {
+          router.push("/index");
+        }
+      } catch (err) {
+        console.log("Error fetching user:", err);
+
+      }
+    };
+
+    getAuthUser();
+  }, []);
 
   return (
     <div className="h-screen w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
