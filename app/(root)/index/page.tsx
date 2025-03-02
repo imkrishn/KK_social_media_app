@@ -34,11 +34,11 @@ export default function Main() {
       try {
         const session = await account.get();
         if (!session) {
-          router.push("/auth");
+          router.push("/");
         }
       } catch (err) {
         console.log("Error fetching user:", err);
-        router.push("/auth");
+        router.push("/");
       }
     };
 
