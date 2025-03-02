@@ -114,7 +114,7 @@ const Signup = () => {
 
 
   return (
-    <form className='flex flex-col gap-4 ' onSubmit={handleSubmit(onSubmit)}>
+    <form className='flex flex-col gap-4 text-black' onSubmit={handleSubmit(onSubmit)}>
 
       <input disabled={isSubmitting} {...register('fullName')} type='text' placeholder='Full Name' className='outline-none py-2 px-3 rounded-2xl' required />
       {errors.fullName?.message && <p className='text-sm text-red-600 my-2'> {errors.fullName?.message}</p>}

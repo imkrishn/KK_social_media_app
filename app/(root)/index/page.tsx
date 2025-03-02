@@ -57,7 +57,7 @@ export default function Main() {
   }, [$id])
 
   return (
-    <main className="lg:px-56 p-8 bg-opacity-35 lg:h-[485px]">
+    <main className="lg:px-56 p-8 bg-opacity-35 lg:h-[485px] text-black">
       <Navbar />
       {setting ? <Settings setSetting={setSetting} /> : <main className="flex lg:flex-row flex-col items-center justify-center gap-7 h-full">
         <SideBar setInterfaceType={setInterfaceType} setSetting={setSetting} />

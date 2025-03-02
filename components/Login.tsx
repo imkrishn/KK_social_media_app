@@ -96,7 +96,7 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4 '>
+    <form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4 text-black'>
       {errors && <p>{errors.root?.message}</p>}
       {err && <p className='text-red-500 m-auto'>{err}</p>}
       <input
