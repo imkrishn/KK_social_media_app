@@ -1,85 +1,79 @@
 'use client'
 
-import Login from '@/components/Login'
-import Signup from '@/components/Signup';
-import { TextGenerateEffect } from '@/components/ui/Text-generate-Effect';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
-import logo from '@/public/images/kk.png'
-import { motion, AnimatePresence } from "framer-motion";
-import { account } from './appwrite';
-import { useRouter } from 'next/navigation';
+import Create from "@/components/Create";
+import Explore from "@/components/Explore";
+import Home from "@/components/Home";
+import Messages from "@/components/Messages";
+import Navbar from "@/components/Navbar";
+import Profile from "@/components/Profile";
+import Settings from "@/components/Settings";
+import SideBar from "@/components/SideBar";
+import Spinner from "@/components/ui/Spinner";
+import { useLoggedInUser } from "@/hooks/useLoggedInUser";
+import { setLoggedInUser } from "@/redux/slices/loggedInUser";
+import { AppDispatch } from "@/redux/store";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { account } from "./appwrite";
 
 
 
 
-type Auth = 'Login' | 'Signup';
+type Type = 'Home' | 'Explore' | 'Messages' | 'Create' | 'Profile' | ''
 
-const Auth = () => {
-  const [authType, setAuthType] = useState<Auth>('Login');
-  const router = useRouter()
+
+export default function Main() {
+  const [interfaceType, setInterfaceType] = useState<Type>('');
+  const [setting, setSetting] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { fullName, dob, userName, imageUrl, $id, email } = useLoggedInUser();
+  const router = useRouter();
+  const [verified, setVerified] = useState(false)
 
   useEffect(() => {
     const getAuthUser = async () => {
       try {
         const session = await account.getSession('current');
 
-        if (session) {
-          router.push("/index");
+        if (!session) {
+          router.push("/");
+        } else {
+          setVerified(true)
         }
       } catch (err) {
         console.log("Error fetching user:", err);
-
+        router.push("/");
       }
     };
 
     getAuthUser();
   }, [router]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setInterfaceType('Profile')
+    }, 3000)
+  }, [])
+
+
+  useEffect(() => {
+    dispatch(setLoggedInUser({ fullName, dob, userName, imageUrl, $id, email }));
+  }, [$id])
+
   return (
-    <div className="h-screen w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
-      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-      <div className='p-4'>
-        <Image src={logo} className='m-auto opacity-55 w-1/2 rounded-full' alt='#' />
-        <TextGenerateEffect words='Connect, share, and engage—your world, your network!' className='text-4xl m-auto w-max my-4' duration={5} />
-
-
-      </div>
-      <div className='border rounded-lg p-6 h-max w-1/3 shadow-2xl z-10 m-11 '>
-        <div className='flex gap-11 p-2 justify-center text-2xl font-bold select-none my-4 '>
-          <p onClick={() => setAuthType('Login')} className={`cursor-pointer active:scale-95 ${authType === 'Login' && 'text-blue-600'}`}>Login</p>
-          <p onClick={() => setAuthType('Signup')} className={`cursor-pointer active:scale-95 ${authType === 'Signup' && 'text-blue-600'}`}>Signup</p>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {authType === "Login" && (
-            <motion.div
-              key="login"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              transition={{ duration: 1 }}
-            >
-              <Login />
-            </motion.div>
-          )}
-
-          {authType === "Signup" && (
-            <motion.div
-              key="signup"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              transition={{ duration: 1 }}
-            >
-              <Signup />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-      </div>
-    </div>
-  )
+    <main className="lg:px-56 p-8 bg-opacity-35 lg:h-[485px] text-black">
+      {verified ? <>
+        <Navbar />
+        {setting ? <Settings setSetting={setSetting} /> : <main className="flex lg:flex-row flex-col items-center justify-center gap-7 h-full">
+          <SideBar setInterfaceType={setInterfaceType} setSetting={setSetting} />
+          {interfaceType === 'Home' && <Home />}
+          {interfaceType === 'Create' && <Create setInterfaceType={setInterfaceType} />}
+          {interfaceType === 'Explore' && <Explore setInterfaceType={setInterfaceType} />}
+          {interfaceType === 'Messages' && <Messages />}
+          {interfaceType === '' && <div className="h-full w-[75%] bg-black rounded-xl flex items-center justify-center"><Spinner size={40} /></div>}
+          {$id && interfaceType === 'Profile' && <Profile id={$id} setInterfaceType={setInterfaceType} />}
+        </main>}</> : <Spinner size={50} />}
+    </main>
+  );
 }
-
-export default Auth
