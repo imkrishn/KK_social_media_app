@@ -33,8 +33,7 @@ export default function Main() {
   useEffect(() => {
     const getAuthUser = async () => {
       try {
-        const session = await account.get();
-        console.log();
+        const session = await account.getSession('current');
 
         if (!session) {
           router.push("/");
@@ -46,7 +45,7 @@ export default function Main() {
     };
 
     getAuthUser();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     setTimeout(() => {

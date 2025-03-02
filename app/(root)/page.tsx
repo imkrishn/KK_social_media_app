@@ -22,7 +22,8 @@ const Auth = () => {
   useEffect(() => {
     const getAuthUser = async () => {
       try {
-        const session = await account.get();
+        const session = await account.getSession('current');
+
         if (session) {
           router.push("/index");
         }
@@ -33,7 +34,7 @@ const Auth = () => {
     };
 
     getAuthUser();
-  }, []);
+  }, [router]);
 
   return (
     <div className="h-screen w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
