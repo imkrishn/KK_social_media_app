@@ -4,11 +4,10 @@ import Login from '@/components/Login'
 import Signup from '@/components/Signup';
 import { TextGenerateEffect } from '@/components/ui/Text-generate-Effect';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import logo from '@/public/images/kk.png'
 import { motion, AnimatePresence } from "framer-motion";
-import { account } from './appwrite';
-import { redirect, useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { getAuthUser } from '@/lib/getAuthUser';
 
 

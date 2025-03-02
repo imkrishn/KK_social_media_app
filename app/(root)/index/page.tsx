@@ -12,7 +12,7 @@ import Spinner from "@/components/ui/Spinner";
 import { useLoggedInUser } from "@/hooks/useLoggedInUser";
 import { setLoggedInUser } from "@/redux/slices/loggedInUser";
 import { AppDispatch } from "@/redux/store";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAuthUser } from "@/lib/getAuthUser";

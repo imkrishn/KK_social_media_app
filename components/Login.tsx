@@ -8,6 +8,7 @@ import bcryptjs from 'bcryptjs'
 import { useRouter } from 'next/navigation';
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from './ui/input-otp';
 import Swal from 'sweetalert2';
+import { useTheme } from 'next-themes';
 
 type Inputs = {
   email: string;
@@ -23,6 +24,7 @@ const Login = () => {
   const [verification, setVerification] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
+  const { theme } = useTheme()
 
   //form submit
 
@@ -30,6 +32,7 @@ const Login = () => {
 
     try {
       const { email, password } = data;
+
 
       const user = await databases.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_URL!,
@@ -96,7 +99,7 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4 text-black'>
+    <form onSubmit={handleSubmit(submit)} className={`flex flex-col gap-4 ${theme === 'dark' ? 'text-white' : 'text-black'} `}>
       {errors && <p>{errors.root?.message}</p>}
       {err && <p className='text-red-500 m-auto'>{err}</p>}
       <input

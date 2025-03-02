@@ -8,6 +8,7 @@ import { z } from 'zod'
 import bcryptjs from 'bcryptjs'
 import Swal from 'sweetalert2'
 import { Query } from 'appwrite';
+import { useTheme } from 'next-themes';
 
 
 const Signupschema = z.object({
@@ -43,7 +44,8 @@ const Signup = () => {
 
   const { handleSubmit, register, formState: { isSubmitting, errors } } = useForm({ resolver: zodResolver(Signupschema) });
   const [userName, setUserName] = useState<string | null>(null)
-  const [err, setErr] = useState<string | null>(null)
+  const [err, setErr] = useState<string | null>(null);
+  const { theme } = useTheme()
 
   async function onSubmit(data: SignupschemaInputs) {
 
@@ -114,7 +116,7 @@ const Signup = () => {
 
 
   return (
-    <form className='flex flex-col gap-4 text-black' onSubmit={handleSubmit(onSubmit)}>
+    <form className={`flex flex-col gap-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`} onSubmit={handleSubmit(onSubmit)}>
 
       <input disabled={isSubmitting} {...register('fullName')} type='text' placeholder='Full Name' className='outline-none py-2 px-3 rounded-2xl' required />
       {errors.fullName?.message && <p className='text-sm text-red-600 my-2'> {errors.fullName?.message}</p>}
