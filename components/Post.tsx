@@ -33,8 +33,8 @@ const Posted = ({ post }: { post: Post }) => {
 
 
   useEffect(() => {
-    async function useFetchUsers() {
-      if (!post) {
+    async function fetchUsers() {
+      if (!post?.userId) {
         return
       }
       try {
@@ -51,7 +51,7 @@ const Posted = ({ post }: { post: Post }) => {
       }
     }
 
-    useFetchUsers()
+    fetchUsers()
   }, [post])
 
 

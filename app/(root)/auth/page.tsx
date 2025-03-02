@@ -33,7 +33,7 @@ const Auth = () => {
     };
 
     getAuthUser();
-  }, []);
+  }, [router]);
 
   return (
     <div className="h-screen w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
