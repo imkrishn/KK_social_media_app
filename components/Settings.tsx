@@ -64,7 +64,22 @@ const Settings = ({ setSetting }: { setSetting: (opr: boolean) => void }) => {
     try {
       const { files } = e.target;
       setUploading(true)
+
+      if (files && !files[0].type.startsWith("image/")) {
+        Swal.fire(
+          {
+            title: "Only image can be uploaded ...",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ok",
+          }
+        );
+        return
+      }
+
       if (files && files?.length > 0) {
+
         const profilePicture = await storage.createFile(
           process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!,
           'unique()',
